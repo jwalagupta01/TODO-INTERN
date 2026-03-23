@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.active {
+  background-color: #fee685;
+  color: #0f172b;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
