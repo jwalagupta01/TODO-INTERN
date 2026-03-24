@@ -19,7 +19,7 @@ const AddTodo = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [timeTaken, setTimeTaken] = useState("");
-  const [status, setStatus] = useState("BackLog");
+  const [status, setStatus] = useState("");
   const [userID, setUserID] = useState("");
   const [emptyTitle, setEmptytitle] = useState(false);
   const [emptyDisc, setEmptyDisc] = useState(false);
@@ -89,6 +89,8 @@ const AddTodo = () => {
 
     if (!isValid) return;
 
+    const finalStatus = userID === "" ? "Not Assigned" : userID;
+
     const newTodo = {
       id: Date.now(),
       title,
@@ -97,7 +99,7 @@ const AddTodo = () => {
       endDate,
       timeTaken,
       status,
-      userID,
+      userID: finalStatus,
     };
 
     const updateUser = user.map((items) =>
@@ -323,7 +325,7 @@ const AddTodo = () => {
               onChangeInput={handleuserStatus}
               label="Select User"
               status={userID}
-              dropDownDiabled={userID !== ""}
+              dropDownDiabled={userID == ""}
             />
           ) : (
             ""
