@@ -312,20 +312,20 @@ const AddTodo = () => {
           </div>
           {/* 4th row -------------------------------end----------------------------------------------- */}
           {/* 5th row--------------------------------start----------------------------------------- */}
-          {userShow && userID == "" ? (
+          {userShow && userID == "Not Assigned" ? (
             <BasicDropDown
               userStatus={user}
               onChangeInput={handleuserStatus}
               label="Select User"
               status={userID}
             />
-          ) : userID !== "" ? (
+          ) : userID !== "Not Assigned" && userID !== "" ? (
             <BasicDropDown
               userStatus={user}
               onChangeInput={handleuserStatus}
               label="Select User"
               status={userID}
-              dropDownDiabled={userID == ""}
+              dropDownDiabled={userID !== ""}
             />
           ) : (
             ""
