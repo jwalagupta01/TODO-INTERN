@@ -12,24 +12,14 @@ const AllTodo = () => {
     // Remove todo
     const delTodo = todo.filter((i) => i.id !== id);
     setTodo(delTodo);
-
-    // Remove todo id from user
-
-    const upadteUser = user.map((u) => ({
-      ...u,
-      isAsigned: u.isAsigned.filter((todoId) => todoId !== id),
-    }));
-
-    setUser(upadteUser);
   };
 
   const editClick = (id) => {
     const editItem = todo.find((i) => i.id == id);
 
     setEditData(editItem);
-    navigate("/");
+    navigate("/edit-todo");
   };
-
   return (
     <div className="ms-60 w-full overflow-scroll gap-3 p-3 bg-teal-100">
       <div className="flex flex-row justify-between px-6 py-3 border-b border-gray-400 *:font-bold *:text-gray-600">
@@ -63,7 +53,7 @@ const AllTodo = () => {
             <div className="flex flex-col items-center justify-center">
               <p>{items.status}</p>
               <p className="text-xs">To</p>
-              <p>{items.userID}</p>
+              <p>{items.userID === "" ? "Not Assigned" : items.userID}</p>
             </div>
 
             <div className="flex items-center gap-x-2 *:text-white *:cursor-pointer">

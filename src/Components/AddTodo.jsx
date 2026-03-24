@@ -9,7 +9,7 @@ import {
   BasicDropDown,
 } from "./elements/AllInputs";
 
-const AddTodo = () => {
+const AddTodo = ({ isEdit }) => {
   const { todo, setTodo, editData, setEditData, user, setUser } =
     useContext(AppContext);
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ const AddTodo = () => {
     setEndDate("");
     setTimeTaken("");
     setStatus("");
-    setStatus("BackLog");
+    setStatus("");
     setUserID("");
   };
 
@@ -90,8 +90,6 @@ const AddTodo = () => {
 
     if (!isValid) return;
 
-    const finalStatus = userID === "" ? "Not Assigned" : userID;
-
     const newTodo = {
       id: Date.now(),
       title,
@@ -99,20 +97,9 @@ const AddTodo = () => {
       startDate,
       endDate,
       timeTaken,
-      status,
-      userID: finalStatus,
+      status: status == "" ? "BackLog" : status,
+      userID,
     };
-    const updateUser = user.map((items) =>
-      items.name === userID
-        ? {
-            ...items,
-            isAsigned: [...items.isAsigned, newTodo.id],
-          }
-        : items,
-    );
-
-    setUser(updateUser);
-
     setTodo([...todo, newTodo]);
     formReset();
     navigate("/alltodo");
@@ -133,25 +120,6 @@ const AddTodo = () => {
     const isValid = checkInput();
 
     if (!isValid) return;
-
-    const updateUser = user.map((items) =>
-      items.name === userID
-        ? {
-            ...items,
-            isAsigned: isAsigned.length
-            // isAsigned: [...items.isAsigned, editData.id],
-          }
-        : items,
-    );
-    setUser(updateUser);
-
-    // const upadteUserAssigned = user.map((u) => ({
-    //   ...u,
-    //   isAsigned: u.isAsigned.filter((todoId) => todoId !== editData.id),
-    // }));
-
-    // console.log(user);
-    // setUser(upadteUserAssigned);
 
     const saveDate = todo.map((items) =>
       items.id === editData.id
@@ -176,16 +144,20 @@ const AddTodo = () => {
   };
 
   useEffect(() => {
-    if (editData) {
+    if (!isEdit || !editData) {
+      formReset();
+      setEditData(null);
+      return;
+    } else if (editData && isEdit) {
       setTitle(editData.title);
       setDescription(editData.description);
       setStartDate(editData.startDate);
       setEndDate(editData.endDate);
       setTimeTaken(editData.timeTaken);
       setStatus(editData.status);
-      setUserID(editData.userID);
+      setUserID(editData.userID === "Not Assigned" ? "" : editData.userID);
     }
-  }, [editData]);
+  }, [editData && isEdit]);
 
   const handletitleChange = (e) => {
     setTitle(e.target.value);
@@ -213,10 +185,12 @@ const AddTodo = () => {
   };
 
   const handleStatus = (e) => {
+    console.log(e.target.value);
     setStatus(e.target.value);
   };
 
   const handleuserStatus = (e) => {
+    console.log(e.target.value);
     setUserID(e.target.value);
   };
 

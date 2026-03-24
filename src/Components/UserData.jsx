@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-// import { user } from "../mock/user";
 import { FaRegUser } from "react-icons/fa";
 import { AppContext } from "../Context/Context";
 import { FaArrowDown } from "react-icons/fa6";
@@ -32,7 +31,6 @@ const UserData = () => {
               </div>
               <div className="flex flex-col items-center">
                 <p className="text-sm">Assigned Work</p>
-                {/* <p>{items.isAsigned.length}</p> */}
                 <p>{todo?.filter((t) => t.userID == items.name).length || 0}</p>
               </div>
               <div></div>

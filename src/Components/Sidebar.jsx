@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
+import { AppContext } from "../Context/Context";
 
 const Sidebar = () => {
   return (

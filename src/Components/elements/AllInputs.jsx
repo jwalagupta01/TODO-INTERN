@@ -121,9 +121,13 @@ export const BasicDropDown = ({
           className="border outline-0 w-full h-10 rounded border-gray-600 px-5 cursor-pointer *:text-slate-950 focus:border-amber-200 focus:text-amber-200"
           disabled={dropDownDiabled}
         >
-          <option value="" disabled>
-            Select Status
-          </option>
+          {label == "Current Status" ? (
+            ""
+          ) : (
+            <option value="" disabled>
+              Select User
+            </option>
+          )}
           {userStatus.map((items, index) => (
             <option
               key={index}
