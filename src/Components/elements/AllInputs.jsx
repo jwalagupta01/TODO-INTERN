@@ -6,6 +6,7 @@ export const BasicInput = ({
   emptyTitle,
   type,
   id,
+  emptyValueText,
 }) => {
   return (
     <>
@@ -25,7 +26,7 @@ export const BasicInput = ({
           className="border rounded h-10 border-gray-600 outline-0 font-semibold focus:border-amber-200 focus:text-amber-200"
         />
         {emptyTitle && (
-          <p className="text-xs text-amber-200">Work Section Is Empty</p>
+          <p className="text-xs text-amber-200">{emptyValueText}</p>
         )}
       </div>
     </>

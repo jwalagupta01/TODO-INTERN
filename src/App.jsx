@@ -20,7 +20,10 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path="/" element={<AddTodo />} />
-          <Route path="/edit-todo" element={<AddTodo isEdit="true" />} />
+          <Route
+            path="/edit-todo/:todoId"
+            element={<AddTodo isEdit="true" />}
+          />
           <Route path="/alltodo" element={<AllTodo />} />
           <Route path="/userData" element={<UserData />} />
         </Routes>

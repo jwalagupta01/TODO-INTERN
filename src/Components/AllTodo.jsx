@@ -18,7 +18,7 @@ const AllTodo = () => {
     const editItem = todo.find((i) => i.id == id);
 
     setEditData(editItem);
-    navigate("/edit-todo");
+    navigate(`/edit-todo/${id}`);
   };
   return (
     <div className="ms-60 w-full overflow-scroll gap-3 p-3 bg-linear-65 from-teal-200 to-teal-500">

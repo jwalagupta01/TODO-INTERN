@@ -238,6 +238,7 @@ const AddTodo = ({ isEdit }) => {
             onChangeInput={handletitleChange}
             emptyTitle={emptyTitle}
             type="text"
+            emptyValueText="Work Section Is Empty"
           />
           {/* 1st row -------------------------------------------end---------------------------- */}
           {/* 2nd row --------------------------------------start---------------------------------- */}
@@ -285,6 +286,7 @@ const AddTodo = ({ isEdit }) => {
                 type="number"
                 id="total_hour"
                 emptyTitle={emptyTimeTaken}
+                emptyValueText="Taken Time Section Is Empty"
               />
             </div>
             <BasicDropDown

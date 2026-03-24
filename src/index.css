@@ -8,3 +8,14 @@
 ::-webkit-scrollbar {
   display: none;
 }
+/* for chrome safari */
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* for fireFox */
+input[type-number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
