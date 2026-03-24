@@ -165,7 +165,8 @@ const AddTodo = ({ isEdit }) => {
   };
 
   const handletimeTakenChange = (e) => {
-    setTimeTaken(e.target.value);
+    const val = e.target.value;
+    if (val === "" || Number(val) >= 1) setTimeTaken(val);
     setEmptyTimeTaken(false);
   };
 
@@ -185,12 +186,12 @@ const AddTodo = ({ isEdit }) => {
   };
 
   const handleStatus = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setStatus(e.target.value);
   };
 
   const handleuserStatus = (e) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setUserID(e.target.value);
   };
 
