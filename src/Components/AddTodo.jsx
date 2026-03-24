@@ -26,7 +26,6 @@ const AddTodo = () => {
   const [emptyStartDate, setEmptyStartDate] = useState(false);
   const [emptyEndDate, setEmptyEndDate] = useState(false);
   const [emptyTimeTaken, setEmptyTimeTaken] = useState(false);
-  const [userShow, setUserShow] = useState(false);
 
   const userStatus = [
     {
@@ -82,6 +81,8 @@ const AddTodo = () => {
     setUserID("");
   };
 
+  // add User
+
   const addTodo = (e) => {
     e.preventDefault();
 
@@ -101,7 +102,6 @@ const AddTodo = () => {
       status,
       userID: finalStatus,
     };
-
     const updateUser = user.map((items) =>
       items.name === userID
         ? {
@@ -125,6 +125,8 @@ const AddTodo = () => {
     !endDate.trim() &&
     !timeTaken.trim();
 
+  // update User
+
   const update = (e) => {
     e.preventDefault();
 
@@ -136,12 +138,20 @@ const AddTodo = () => {
       items.name === userID
         ? {
             ...items,
-            isAsigned: [...items.isAsigned, editData.id],
+            isAsigned: isAsigned.length
+            // isAsigned: [...items.isAsigned, editData.id],
           }
         : items,
     );
-
     setUser(updateUser);
+
+    // const upadteUserAssigned = user.map((u) => ({
+    //   ...u,
+    //   isAsigned: u.isAsigned.filter((todoId) => todoId !== editData.id),
+    // }));
+
+    // console.log(user);
+    // setUser(upadteUserAssigned);
 
     const saveDate = todo.map((items) =>
       items.id === editData.id
@@ -160,19 +170,10 @@ const AddTodo = () => {
 
     setTodo(saveDate);
     setUserID("");
-    setUserShow(false);
     setEditData(null);
     formReset();
     navigate("/alltodo");
   };
-
-  useEffect(() => {
-    if (status === "Assigned") {
-      setUserShow(true);
-    } else {
-      setUserShow(false);
-    }
-  }, [status]);
 
   useEffect(() => {
     if (editData) {
@@ -229,8 +230,13 @@ const AddTodo = () => {
     return disabledObject[items.name]?.includes(status) || false;
   };
 
+  const isUserVisible = status == "Assigned";
+
+  // const isUserDisabled = userID !== "" && userID !== "Not Assigned";
+  const isUserDisabled = status !== "Assigned";
+
   return (
-    <div className="px-5 flex items-center justify-center w-full bg-teal-50">
+    <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
       <form
         action=""
         className="w-full sm:w-full md:w-full lg:w-4/5 xl:w-1/2 2xl:w-2/5"
@@ -312,23 +318,14 @@ const AddTodo = () => {
           </div>
           {/* 4th row -------------------------------end----------------------------------------------- */}
           {/* 5th row--------------------------------start----------------------------------------- */}
-          {userShow && userID == "Not Assigned" ? (
+          {isUserVisible && (
             <BasicDropDown
               userStatus={user}
               onChangeInput={handleuserStatus}
               label="Select User"
               status={userID}
+              dropDownDiabled={isUserDisabled}
             />
-          ) : userID !== "Not Assigned" && userID !== "" ? (
-            <BasicDropDown
-              userStatus={user}
-              onChangeInput={handleuserStatus}
-              label="Select User"
-              status={userID}
-              dropDownDiabled={userID !== ""}
-            />
-          ) : (
-            ""
           )}
           {/* 5th row ---------------------------------end---------------------------------------- */}
           {/* 6th row ---------------------------------start----------------------------------------- */}

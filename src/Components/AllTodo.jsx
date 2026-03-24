@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { FaArrowDown } from "react-icons/fa6";
+import { FaArrowDown, FaArrowRight } from "react-icons/fa6";
 import { AppContext } from "../Context/Context";
 import { useNavigate } from "react-router-dom";
 
@@ -27,10 +27,11 @@ const AllTodo = () => {
     const editItem = todo.find((i) => i.id == id);
 
     setEditData(editItem);
+    navigate("/");
   };
 
   return (
-    <div className="w-full h-auto overflow-scroll">
+    <div className="ms-60 w-full overflow-scroll gap-3 p-3 bg-teal-100">
       <div className="flex flex-row justify-between px-6 py-3 border-b border-gray-400 *:font-bold *:text-gray-600">
         <div className="w-70">TASK</div>
         <div>start To End</div>
@@ -44,7 +45,7 @@ const AllTodo = () => {
             key={index}
             className="flex bg-white items-center justify-between mx-3 p-3 shadow-2xl/30 rounded"
           >
-            <div>
+            <div className="bg-secondary">
               <p className="ps-2 w-70 text-lg font-semibold">{items.title}</p>
               <p className="text-xs text-gray-400 font-bold">Description</p>
               <p className="ps-2 text-sm w-70">{items.description}</p>
@@ -80,7 +81,6 @@ const AllTodo = () => {
                 className="bg-blue-600 px-5 py-2 rounded-lg text-xs"
                 onClick={() => {
                   editClick(items.id);
-                  navigate("/");
                 }}
               >
                 EDIT
@@ -89,6 +89,56 @@ const AllTodo = () => {
           </div>
         ))}
       </div>
+      {/* <div className="rounded-xl px-5 py-4 w-130 bg-teal-500/30 shadow-2xl/50 shadow-black">
+        <p className="text-xl font-bold">What do you need to do..!</p>
+        <p className="text-xs">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis nulla
+          consequatur saepe hic, iusto quidem fuga eligendi ut libero nisi
+          ducimus harum quaerat dolores nesciunt, possimus cum ab exercitationem
+          molestiae?
+        </p>
+        <div className="flex items-center justify-between px-5 *:text-sm">
+          <p>2026-03-09</p>
+          <p>
+            <FaArrowRight />
+          </p>
+          <p>2026-03-09</p>
+        </div>
+        <p></p>
+        <div className="flex justify-center items-center gap-x-2  *:cursor-pointer">
+          <button
+            type="button"
+            onClick={() => {
+              deleteTodo(items.id);
+            }}
+            className="bg-red-600 px-5 py-2 rounded-lg text-xs"
+          >
+            DELETE
+          </button>
+          <button
+            type="button"
+            className="bg-blue-600 px-5 py-2 rounded-lg text-xs"
+            onClick={() => {
+              editClick(items.id);
+              navigate("/");
+            }}
+          >
+            EDIT
+          </button>
+        </div>
+      </div>
+      <div className="border w-130 h-60">
+        <p>Hello world</p>
+      </div> */}
+      {/* <div className="border w-130">
+        <p>Hello world</p>
+      </div>
+      <div className="border w-130">
+        <p>Hello world</p>
+      </div>
+      <div className="border w-130">
+        <p>Hello world</p>
+      </div> */}
     </div>
   );
 };

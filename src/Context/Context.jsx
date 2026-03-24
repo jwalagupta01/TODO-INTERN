@@ -9,7 +9,7 @@ const AppContextProvider = (props) => {
       id: "1",
       name: "admin1",
       email: "admin1@gmail.com",
-      isAsigned: [1773917238982],
+      isAsigned: [],
     },
     {
       id: "2",
@@ -37,22 +37,22 @@ const AppContextProvider = (props) => {
     },
   ]);
   const [todo, setTodo] = useState([
-    {
-      description: "elsdclincx eudhia usdh ciaychisdh ci",
-      endDate: "2026-03-09",
-      id: 1773917238982,
-      startDate: "2026-03-24",
-      status: "In Progress",
-      timeTaken: "8",
-      title: "wejfnlsdij",
-      userID: "admin1",
-      makerUserID: "admin1",
-      assignedUSer: "admin 1",
-    },
+    // {
+    //   description: "elsdclincx eudhia usdh ciaychisdh ci",
+    //   endDate: "2026-03-09",
+    //   id: 1773917238982,
+    //   startDate: "2026-03-24",
+    //   status: "In Progress",
+    //   timeTaken: "8",
+    //   title: "wejfnlsdij",
+    //   userID: "admin1",
+    //   makerUserID: "admin1",
+    //   assignedUSer: "admin 1",
+    // },
   ]);
 
   useEffect(() => {
-    // console.log(todo);
+    console.log(todo);
   }, [todo]);
 
   const value = {

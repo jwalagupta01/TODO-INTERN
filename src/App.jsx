@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div className="flex flex-col h-screen w-screen bg-white">
       <Navbar />
-      <div className="flex h-full">
+      <div className="flex h-full mt-15 flex-row justify-between">
         <Sidebar />
         <Routes>
           <Route path="/" element={<AddTodo />} />

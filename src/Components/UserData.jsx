@@ -15,12 +15,8 @@ const UserData = () => {
     setUserWork(work);
   };
 
-  useEffect(() => {
-    console.log(userWork);
-  }, [userWork]);
-
   return (
-    <div className="w-full h-full flex py-4 px-2 overflow-scroll">
+    <div className="ms-60 w-full h-full flex py-4 px-2 overflow-scroll">
       <div className="w-full flex flex-col gap-y-3">
         {user.map((items, index) => (
           <div key={index} className="">
@@ -36,7 +32,8 @@ const UserData = () => {
               </div>
               <div className="flex flex-col items-center">
                 <p className="text-sm">Assigned Work</p>
-                <p>{items.isAsigned.length}</p>
+                {/* <p>{items.isAsigned.length}</p> */}
+                <p>{todo?.filter((t) => t.userID == items.name).length || 0}</p>
               </div>
               <div></div>
               {showUserWork !== items.name ? (
