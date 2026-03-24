@@ -21,7 +21,7 @@ const AllTodo = () => {
     navigate("/edit-todo");
   };
   return (
-    <div className="ms-60 w-full overflow-scroll gap-3 p-3 bg-teal-100">
+    <div className="ms-60 w-full overflow-scroll gap-3 p-3 bg-linear-65 from-teal-200 to-teal-500">
       <div className="flex flex-row justify-between px-6 py-3 border-b border-gray-400 *:font-bold *:text-gray-600">
         <div className="w-70">TASK</div>
         <div>start To End</div>

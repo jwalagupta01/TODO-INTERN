@@ -204,10 +204,15 @@ const AddTodo = ({ isEdit }) => {
     return disabledObject[items.name]?.includes(status) || false;
   };
 
-  const isUserVisible = status == "Assigned";
+  const isUserVisible =
+    status == "Assigned" ||
+    status == "In Progress" ||
+    status == "Reviews" ||
+    status == "Done";
 
   // const isUserDisabled = userID !== "" && userID !== "Not Assigned";
-  const isUserDisabled = status !== "Assigned";
+  const isUserDisabled =
+    status !== "Assigned" && status !== "Reviews" && status !== "In Progress";
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
@@ -288,6 +293,7 @@ const AddTodo = ({ isEdit }) => {
               onChangeInput={handleStatus}
               label="Current Status"
               status={status}
+              dropDownDiabled={!isEdit}
             />
           </div>
           {/* 4th row -------------------------------end----------------------------------------------- */}

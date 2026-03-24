@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "./Components/Sidebar";
 import Navbar from "./Components/Navbar";
 import AddTodo from "./Components/AddTodo";
 import AllTodo from "./Components/AllTodo";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import UserData from "./Components/UserData";
 
 const App = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/");
+  }, []);
+
   return (
     <div className="flex flex-col h-screen w-screen bg-white">
       <Navbar />
