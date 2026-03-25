@@ -90,6 +90,18 @@ const AddTodo = ({ isEdit }) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
+  const formreset = () => {
+    setFormData({
+      title: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      timeTaken: "",
+      status: "",
+      userID: "",
+    });
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const isValid = checkInput();
@@ -110,15 +122,7 @@ const AddTodo = ({ isEdit }) => {
       dispatch(addTodo(formData));
     }
     dispatch(setEditData(null));
-    setFormData({
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      timeTaken: "",
-      status: "",
-      userID: "",
-    });
+    formreset();
     navigate("/alltodo");
   };
 
@@ -128,6 +132,8 @@ const AddTodo = ({ isEdit }) => {
         ...editData,
         userID: editData.userID === "Not Assigned" ? "" : editData.userID,
       });
+    } else {
+      formreset();
     }
   }, [editData && isEdit]);
 
