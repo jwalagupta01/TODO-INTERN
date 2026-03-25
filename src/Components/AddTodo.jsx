@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../Context/Context";
+import React, { useEffect, useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,182 +17,53 @@ const AddTodo = ({ isEdit }) => {
   const editData = useSelector((state) => state.todo.editTodoId);
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [timeTaken, setTimeTaken] = useState("");
-  const [status, setStatus] = useState("");
-  const [userID, setUserID] = useState("");
-  const [emptyTitle, setEmptytitle] = useState(false);
-  const [emptyDisc, setEmptyDisc] = useState(false);
-  const [emptyStartDate, setEmptyStartDate] = useState(false);
-  const [emptyEndDate, setEmptyEndDate] = useState(false);
-  const [emptyTimeTaken, setEmptyTimeTaken] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+    timeTaken: "",
+    status: "",
+    userID: "",
+  });
 
   const userStatus = [
-    {
-      // id:wer234,
-      // value:"backlog",
-      name: "BackLog",
-    },
-    {
-      name: "Assigned",
-    },
-    {
-      name: "In Progress",
-    },
-    {
-      name: "Reviews",
-    },
-    {
-      name: "Done",
-    },
-  ];
+    "BackLog",
+    "Assigned",
+    "In Progress",
+    "Reviews",
+    "Done",
+  ].map((name) => ({ name }));
 
   const checkInput = () => {
     let isValid = true;
 
-    if (!title) {
+    if (!formData.title) {
       setEmptytitle(true);
       isValid = false;
-    } else if (!description) {
+    } else if (!formData.description) {
       setEmptyDisc(true);
       isValid = false;
-    } else if (!startDate) {
+    } else if (!formData.startDate) {
       setEmptyStartDate(true);
       isValid = false;
-    } else if (!endDate) {
+    } else if (!formData.endDate) {
       setEmptyEndDate(true);
       isValid = false;
-    } else if (!timeTaken) {
+    } else if (!formData.timeTaken) {
       setEmptyTimeTaken(true);
       isValid = false;
     }
-
     return isValid;
-  };
-
-  const formReset = () => {
-    setTitle("");
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-    setTimeTaken("");
-    setStatus("");
-    setStatus("");
-    setUserID("");
-  };
-
-  // add User
-
-  const addTodohandler = (e) => {
-    e.preventDefault();
-    const isValid = checkInput();
-    if (!isValid) return;
-    const formData = {
-      id: Date.now(),
-      title,
-      description,
-      startDate,
-      endDate,
-      timeTaken,
-      status: status == "" ? "BackLog" : status,
-      userID,
-    };
-    dispatch(addTodo(formData));
-    formReset();
-    navigate("/alltodo");
   };
 
   // if all input are blanks so disabled the button
   const disabledbtn =
-    !title.trim() &&
-    !description.trim() &&
-    !startDate.trim() &&
-    !endDate.trim() &&
-    !timeTaken.trim();
-
-  // update User
-
-  const update = (e) => {
-    e.preventDefault();
-    const isValid = checkInput();
-    if (!isValid) return;
-
-    const saveData = todo.map((items) =>
-      items.id == editData.id
-        ? {
-            ...items,
-            title,
-            description,
-            startDate,
-            endDate,
-            timeTaken,
-            status,
-            userID,
-          }
-        : items,
-    );
-
-    dispatch(editTodo(saveData));
-    setUserID("");
-    dispatch(setEditData(null));
-    formReset();
-    navigate("/alltodo");
-  };
-
-  useEffect(() => {
-    if (!isEdit || !editData) {
-      formReset();
-      dispatch(setEditData(null));
-      return;
-    } else if (editData && isEdit) {
-      setTitle(editData.title);
-      setDescription(editData.description);
-      setStartDate(editData.startDate);
-      setEndDate(editData.endDate);
-      setTimeTaken(editData.timeTaken);
-      setStatus(editData.status);
-      setUserID(editData.userID === "Not Assigned" ? "" : editData.userID);
-    }
-  }, [editData && isEdit]);
-
-  const handletitleChange = (e) => {
-    setTitle(e.target.value);
-    setEmptytitle(false);
-  };
-
-  const handletimeTakenChange = (e) => {
-    const val = e.target.value;
-    if (val === "" || Number(val) >= 1) setTimeTaken(val);
-    setEmptyTimeTaken(false);
-  };
-
-  const handleDiscChange = (e) => {
-    setDescription(e.target.value);
-    setEmptyDisc(false);
-  };
-
-  const handleStartDate = (e) => {
-    setStartDate(e.target.value);
-    setEmptyStartDate(false);
-  };
-
-  const handleEndDate = (e) => {
-    setEndDate(e.target.value);
-    setEmptyEndDate(false);
-  };
-
-  const handleStatus = (e) => {
-    // console.log(e.target.value);
-    setStatus(e.target.value);
-  };
-
-  const handleuserStatus = (e) => {
-    // console.log(e.target.value);
-    setUserID(e.target.value);
-  };
+    !formData.title.trim() &&
+    !formData.description.trim() &&
+    !formData.startDate.trim() &&
+    !formData.endDate.trim() &&
+    !formData.timeTaken.trim();
 
   const disabledObject = {
     BackLog: ["Assigned", "Done", "In Progress", "Reviews"],
@@ -206,57 +76,94 @@ const AddTodo = ({ isEdit }) => {
   };
 
   const isUserVisible =
-    status == "Assigned" ||
-    status == "In Progress" ||
-    status == "Reviews" ||
-    status == "Done";
+    formData.status == "Assigned" ||
+    formData.status == "In Progress" ||
+    formData.status == "Reviews" ||
+    formData.status == "Done";
 
-  // const isUserDisabled = userID !== "" && userID !== "Not Assigned";
   const isUserDisabled =
-    status !== "Assigned" && status !== "Reviews" && status !== "In Progress";
+    formData.status !== "Assigned" &&
+    formData.status !== "Reviews" &&
+    formData.status !== "In Progress";
+
+  const handleOnChange = (key, value) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const isValid = checkInput();
+    if (!isValid) return;
+
+    const payload = {
+      ...formData,
+      id: editData?.id || Date.now(),
+      timeTaken: formData.timeTaken == "" || formData.timeTaken >= 1 ? "1" : "",
+      status: formData.status || "BackLog",
+    };
+    if (isEdit) {
+      const update = todo.map((item) =>
+        item.id === editData.id ? payload : item,
+      );
+      dispatch(editTodo(update));
+    } else {
+      dispatch(addTodo(formData));
+    }
+    dispatch(setEditData(null));
+    setFormData({
+      title: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      timeTaken: "",
+      status: "",
+      userID: "",
+    });
+    navigate("/alltodo");
+  };
+
+  useEffect(() => {
+    if (editData && isEdit) {
+      setFormData({
+        ...editData,
+        userID: editData.userID === "Not Assigned" ? "" : editData.userID,
+      });
+    }
+  }, [editData && isEdit]);
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
       <form
         action=""
+        onSubmit={handleFormSubmit}
         className="w-full sm:w-full md:w-full lg:w-4/5 xl:w-1/2 2xl:w-2/5"
       >
         <div className="w-full flex flex-col gap-y-3 rounded-lg items-center text-white bg-slate-800 justify-center px-10 py-8 shadow-2xl/70 shadow-black">
-          {editData ? (
-            <p className="text-3xl text-center font-bold underline text-amber-200">
-              UPDATE
-            </p>
-          ) : (
-            <p className="text-3xl text-center font-bold underline text-amber-200">
-              ADD TASK
-            </p>
-          )}
+          <p className="text-3xl text-center font-bold underline text-amber-200">
+            {isEdit ? "UPDATE" : "ADD TASK"}
+          </p>
           {/* 1st row -----------------------------start---------------------------------- */}
           <BasicInput
             label="Title"
             placeholder="What do you need to do..!"
-            value={title}
-            onChangeInput={handletitleChange}
-            emptyTitle={emptyTitle}
+            value={formData.title}
+            onChangeInput={(e) => handleOnChange("title", e.target.value)}
             type="text"
-            emptyValueText="Work Section Is Empty"
+            emptyValueText="Title required"
           />
           {/* 1st row -------------------------------------------end---------------------------- */}
           {/* 2nd row --------------------------------------start---------------------------------- */}
           <Basictextarea
             placeholder="Enter Your Description"
-            value={description}
-            onChangeInput={handleDiscChange}
-            emptyDisc={emptyDisc}
-            label="Start Date"
+            value={formData.description}
+            onChangeInput={(e) => handleOnChange("description", e.target.value)}
           />
           {/* 2nd row----------------------------------------end----------------------------------------------- */}
           {/* 3rd row ----------------------------------------start------------------------------------------ */}
           <div className="flex flex-col sm:flex-row items-center w-full justify-between">
             <BasicDate
-              value={startDate}
-              onChangeInput={handleStartDate}
-              emptyStartDate={emptyStartDate}
+              value={formData.startDate}
+              onChangeInput={(e) => handleOnChange("startDate", e.target.value)}
               id="startDate"
               min=""
               label="Start Date"
@@ -265,11 +172,10 @@ const AddTodo = ({ isEdit }) => {
               <FaArrowRightLong />
             </p>
             <BasicDate
-              value={endDate}
-              onChangeInput={handleEndDate}
-              emptyStartDate={emptyEndDate}
+              value={formData.endDate}
+              onChangeInput={(e) => handleOnChange("endDate", e.target.value)}
               id="endDate"
-              min={startDate}
+              min={formData.startDate}
               label="End Date"
             />
           </div>
@@ -282,22 +188,21 @@ const AddTodo = ({ isEdit }) => {
               <BasicInput
                 label="Time Taken"
                 placeholder="Total Time Taken"
-                value={timeTaken}
-                onChangeInput={handletimeTakenChange}
-                emptyTimeTaken
+                value={formData.timeTaken}
+                onChangeInput={(e) =>
+                  handleOnChange("timeTaken", e.target.value)
+                }
                 type="number"
-                id="total_hour"
-                emptyTitle={emptyTimeTaken}
-                emptyValueText="Taken Time Section Is Empty"
+                emptyValueText="Taken Time Required"
               />
             </div>
             {/* status DropDown */}
             <BasicDropDown
               userStatus={userStatus}
               isOptionDisabled={isOptionDisabled}
-              onChangeInput={handleStatus}
               label="Current Status"
-              status={status}
+              status={formData.status}
+              onChangeInput={(e) => handleOnChange("status", e.target.value)}
               dropDownDiabled={!isEdit}
             />
           </div>
@@ -305,36 +210,22 @@ const AddTodo = ({ isEdit }) => {
           {isUserVisible && (
             <BasicDropDown
               userStatus={user}
-              onChangeInput={handleuserStatus}
               label="Select User"
-              status={userID}
+              status={formData.userID}
+              onChangeInput={(e) => handleOnChange("userID", e.target.value)}
               dropDownDiabled={isUserDisabled}
             />
           )}
-          {/* 5th row ---------------------------------end---------------------------------------- */}
-          {/* 6th row ---------------------------------start----------------------------------------- */}
           <div className="flex items-center">
-            {editData ? (
-              <button
-                type="submit"
-                disabled={disabledbtn}
-                className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
-                onClick={update}
-              >
-                UPDATE
-              </button>
-            ) : (
-              <button
-                type="submit"
-                disabled={disabledbtn}
-                className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
-                onClick={addTodohandler}
-              >
-                SUBMIT
-              </button>
-            )}
+            {/* submit button */}
+            <button
+              type="submit"
+              disabled={disabledbtn}
+              className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
+            >
+              {isEdit ? "UPDATE" : "SUBMIT"}
+            </button>
           </div>
-          {/* 6th row ------------------------------------end--------------------------------------- */}
         </div>
       </form>
     </div>
