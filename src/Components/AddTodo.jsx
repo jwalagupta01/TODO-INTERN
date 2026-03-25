@@ -14,6 +14,7 @@ import { addTodo, editTodo, setEditData } from "../redux/todo/todoSlice";
 const AddTodo = ({ isEdit }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.users);
+  const todo = useSelector((state) => state.todo.todos);
   const editData = useSelector((state) => state.todo.editTodoId);
   const navigate = useNavigate();
 
@@ -120,16 +121,21 @@ const AddTodo = ({ isEdit }) => {
     const isValid = checkInput();
     if (!isValid) return;
 
-    const saveData = {
-      id: editData.id,
-      title,
-      description,
-      startDate,
-      endDate,
-      timeTaken,
-      status,
-      userID,
-    };
+    const saveData = todo.map((items) =>
+      items.id == editData.id
+        ? {
+            ...items,
+            title,
+            description,
+            startDate,
+            endDate,
+            timeTaken,
+            status,
+            userID,
+          }
+        : items,
+    );
+
     dispatch(editTodo(saveData));
     setUserID("");
     dispatch(setEditData(null));
