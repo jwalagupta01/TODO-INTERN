@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 import { AppContext } from "../Context/Context";
 import { FaArrowDown } from "react-icons/fa6";
+import { useSelector, useDispatch } from "react-redux";
 
 const UserData = () => {
-  const { todo, setTodo, user, setUser } = useContext(AppContext);
+  const user = useSelector((state) => state.user.users);
+  const todo = useSelector((state) => state.todo.todos);
   const [userWork, setUserWork] = useState([]);
   const [showUserWork, setShowUserWork] = useState("");
 

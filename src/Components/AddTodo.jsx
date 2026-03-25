@@ -13,9 +13,8 @@ import { addTodo, editTodo, setEditData } from "../redux/todo/todoSlice";
 
 const AddTodo = ({ isEdit }) => {
   const dispatch = useDispatch();
-  const todo = useSelector((state) => state.todo.todos);
+  const user = useSelector((state) => state.user.users);
   const editData = useSelector((state) => state.todo.editTodoId);
-  const { user } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
@@ -106,6 +105,7 @@ const AddTodo = ({ isEdit }) => {
     navigate("/alltodo");
   };
 
+  // if all input are blanks so disabled the button
   const disabledbtn =
     !title.trim() &&
     !description.trim() &&
@@ -272,6 +272,7 @@ const AddTodo = ({ isEdit }) => {
 
           <div className="flex flex-col sm:flex-row justify-between items-center w-full *:w-1/2 gap-x-10">
             <div>
+              {/* time Taken dropDown */}
               <BasicInput
                 label="Time Taken"
                 placeholder="Total Time Taken"
@@ -284,6 +285,7 @@ const AddTodo = ({ isEdit }) => {
                 emptyValueText="Taken Time Section Is Empty"
               />
             </div>
+            {/* status DropDown */}
             <BasicDropDown
               userStatus={userStatus}
               isOptionDisabled={isOptionDisabled}
@@ -293,8 +295,7 @@ const AddTodo = ({ isEdit }) => {
               dropDownDiabled={!isEdit}
             />
           </div>
-          {/* 4th row -------------------------------end----------------------------------------------- */}
-          {/* 5th row--------------------------------start----------------------------------------- */}
+          {/* user dropDown */}
           {isUserVisible && (
             <BasicDropDown
               userStatus={user}
