@@ -8,10 +8,14 @@ import {
   BasicDate,
   BasicDropDown,
 } from "./elements/AllInputs";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, editTodo, setEditData } from "../redux/todo/todoSlice";
 
 const AddTodo = ({ isEdit }) => {
-  const { todo, setTodo, editData, setEditData, user, setUser } =
-    useContext(AppContext);
+  const dispatch = useDispatch();
+  const todo = useSelector((state) => state.todo.todos);
+  const editData = useSelector((state) => state.todo.editTodoId);
+  const { user } = useContext(AppContext);
   const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
@@ -83,14 +87,11 @@ const AddTodo = ({ isEdit }) => {
 
   // add User
 
-  const addTodo = (e) => {
+  const addTodohandler = (e) => {
     e.preventDefault();
-
     const isValid = checkInput();
-
     if (!isValid) return;
-
-    const newTodo = {
+    const formData = {
       id: Date.now(),
       title,
       description,
@@ -100,7 +101,7 @@ const AddTodo = ({ isEdit }) => {
       status: status == "" ? "BackLog" : status,
       userID,
     };
-    setTodo([...todo, newTodo]);
+    dispatch(addTodo(formData));
     formReset();
     navigate("/alltodo");
   };
@@ -116,29 +117,22 @@ const AddTodo = ({ isEdit }) => {
 
   const update = (e) => {
     e.preventDefault();
-
     const isValid = checkInput();
-
     if (!isValid) return;
 
-    const saveDate = todo.map((items) =>
-      items.id === editData.id
-        ? {
-            ...items,
-            title,
-            description,
-            startDate,
-            endDate,
-            timeTaken,
-            status,
-            userID,
-          }
-        : items,
-    );
-
-    setTodo(saveDate);
+    const saveData = {
+      id: editData.id,
+      title,
+      description,
+      startDate,
+      endDate,
+      timeTaken,
+      status,
+      userID,
+    };
+    dispatch(editTodo(saveData));
     setUserID("");
-    setEditData(null);
+    dispatch(setEditData(null));
     formReset();
     navigate("/alltodo");
   };
@@ -146,7 +140,7 @@ const AddTodo = ({ isEdit }) => {
   useEffect(() => {
     if (!isEdit || !editData) {
       formReset();
-      setEditData(null);
+      dispatch(setEditData(null));
       return;
     } else if (editData && isEdit) {
       setTitle(editData.title);
@@ -327,7 +321,7 @@ const AddTodo = ({ isEdit }) => {
                 type="submit"
                 disabled={disabledbtn}
                 className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
-                onClick={addTodo}
+                onClick={addTodohandler}
               >
                 SUBMIT
               </button>

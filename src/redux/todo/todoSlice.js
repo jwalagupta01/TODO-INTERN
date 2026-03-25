@@ -13,6 +13,7 @@ const initialState = {
       userID: "admin1",
     },
   ],
+  editTodoId: null,
 };
 
 const todoSlice = createSlice({
@@ -20,24 +21,21 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     addTodo: (state, action) => {
-      const todo = {
-        id: action.payload,
-        title: action.payload,
-        description: "elsdclincx eudhia usdh ciaychisdh ci",
-        startDate: action.payload,
-        endDate: action.payload,
-        timeTaken: action.payload,
-        status: action.payload,
-        userID: action.payload,
-      };
-      state.todos.push(todo);
+      state.todos.push(action.payload);
     },
     removeTodo: (state, action) => {
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },
-    editTodo: (state, action) => {},
+    editTodo: (state, action) => {
+      state.todos = state.todos.map((item) =>
+        item.id === action.payload.id ? action.payload : item,
+      );
+    },
+    setEditData: (state, action) => {
+      state.editTodoId = action.payload;
+    },
   },
 });
 
-export const { addTodo, removeTodo, editTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, editTodo, setEditData } = todoSlice.actions;
 export default todoSlice.reducer;
