@@ -2,16 +2,18 @@ import React, { useContext, useState } from "react";
 import { FaArrowDown, FaArrowRight } from "react-icons/fa6";
 import { AppContext } from "../Context/Context";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { removeTodo } from "../redux/todo/todoSlice";
 
 const AllTodo = () => {
-  const { todo, setTodo, editData, setEditData, user, setUser } =
-    useContext(AppContext);
+  const todo = useSelector((state) => state.todo.todos);
+  const dispatch = useDispatch();
+  // const { todo, setTodo, editData, setEditData, user, setUser } =
+  // useContext(AppContext);
   const navigate = useNavigate();
 
   const deleteTodo = (id) => {
-    // Remove todo
-    const delTodo = todo.filter((i) => i.id !== id);
-    setTodo(delTodo);
+    dispatch(removeTodo(id));
   };
 
   const editClick = (id) => {
