@@ -9,9 +9,9 @@ import UserData from "./Components/UserData";
 const App = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate("/");
-  }, []);
+  // useEffect(() => {
+  //   navigate("/");
+  // }, []);
 
   return (
     <div className="flex flex-col h-screen w-screen bg-white">

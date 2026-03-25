@@ -11,7 +11,8 @@ const AllTodo = () => {
   const navigate = useNavigate();
 
   const deleteTodo = (id) => {
-    dispatch(removeTodo(id));
+    const remove = todo.filter((i) => i.id !== id);
+    dispatch(removeTodo(remove));
   };
 
   const editClick = (id) => {
