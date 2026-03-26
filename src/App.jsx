@@ -4,6 +4,7 @@ import AddTodo from "./Components/AddTodo";
 import AllTodo from "./Components/AllTodo";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import UserData from "./Components/UserData";
+import FormUsingHooks from "./Components/FormUsingHooks";
 
 const App = () => {
   return (
@@ -15,8 +16,9 @@ const App = () => {
           <Route path="/" element={<AddTodo />} />
           <Route
             path="/edit-todo/:todoId"
-            element={<AddTodo isEdit="true" />}
+            element={<FormUsingHooks isEdit="true" />}
           />
+          <Route path="/react-hook-form" element={<FormUsingHooks />} />
           <Route path="/alltodo" element={<AllTodo />} />
           <Route path="/userData" element={<UserData />} />
         </Routes>

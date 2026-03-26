@@ -6,9 +6,12 @@ import {
   Basictextarea,
   BasicDate,
   BasicDropDown,
-} from "./elements/AllInputs";
+} from "./elements/AllInputFormUsing";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, editTodo, setEditData } from "../redux/todo/todoSlice";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const AddTodo = ({ isEdit }) => {
   const dispatch = useDispatch();
@@ -17,17 +20,30 @@ const AddTodo = ({ isEdit }) => {
   const editData = useSelector((state) => state.todo.editTodoId);
   const navigate = useNavigate();
 
-  const formStr = {
-    title: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    timeTaken: "",
-    status: "",
-    userID: "",
-  };
+  const formSchema = z.object({
+    title: z.string
+      .min(10, "Minimum Length Should Be 10")
+      .max(50, "Maximum Length Should Be 50"),
+    description: z.string.max(200, "Miximum Length Should Be 200"),
+    startDate: z.coerce.date,
+    endDate: z.coerce.date,
+    timeTaken: z.number,
+    status: z.string,
+    userId: z.string,
+  });
 
-  const [formData, setFormData] = useState(formStr);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(formSchema),
+  });
+
+  const watchValue = watch();
 
   const userStatus = [
     "BackLog",
@@ -40,12 +56,12 @@ const AddTodo = ({ isEdit }) => {
   // if all input are blanks so disabled the button
 
   const disabledbtn = [
-    formData.title,
-    formData.description,
-    formData.startDate,
-    formData.endDate,
-    formData.timeTaken,
-  ].some((item) => !item.trim());
+    watchValue.title,
+    watchValue.description,
+    watchValue.startDate,
+    watchValue.endDate,
+    watchValue.timeTaken,
+  ].every((item) => !item?.trim());
 
   const disabledObject = {
     BackLog: ["Assigned", "Done", "In Progress", "Reviews"],
@@ -58,59 +74,54 @@ const AddTodo = ({ isEdit }) => {
   };
 
   const isUserVisible = ["Assigned", "In Progress", "Reviews", "Done"].includes(
-    formData.status,
+    watchValue.status,
   );
 
   const isUserDisabled = !["Assigned", "Reviews", "In Progress"].includes(
-    formData.status,
+    watchValue.status,
   );
 
-  const handleOnChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
   // add and update todo handler
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const payload = {
-      ...formData,
+  const handleFormSubmit = (data) => {
+    const payLoad = {
+      ...data,
       id: editData?.id || Date.now(),
-      status: formData.status || "BackLog",
-      userID: formData.userID || "Not Assigned",
+      status: data.status || "BackLog",
+      userID: data.userID || "Not Assigned",
     };
     try {
       isEdit && editData
         ? dispatch(
             editTodo(
-              todo.map((item) => (item.id === editData.id ? payload : item)),
+              todo.map((item) => (item.id === editData.id ? payLoad : item)),
             ),
           )
-        : dispatch(addTodo(payload));
+        : dispatch(addTodo(payLoad));
 
+      navigate("/allTodo");
       dispatch(setEditData(null));
-      setFormData(formStr);
-      navigate("/alltodo");
     } catch (error) {
       console.log(error);
     }
   };
 
-  // useEffect(() => {
-  //   if (editData && isEdit) {
-  //     setFormData({
-  //       ...editData,
-  //       userID: editData.userID === "Not Assigned" ? "" : editData.userID,
-  //     });
-  //   } else {
-  //     setFormData(formStr);
-  //   }
-  // }, [editData && isEdit]);
+  useEffect(() => {
+    if (editData && isEdit) {
+      reset({
+        ...editData,
+        userID: editData.userID === "Not Assigned" ? "" : editData.userID,
+      });
+    } else {
+      reset();
+    }
+  }, [editData && isEdit]);
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
       <form
         action=""
-        onSubmit={handleFormSubmit}
+        onSubmit={handleSubmit(handleFormSubmit)}
         className="w-full sm:w-full md:w-full lg:w-4/5 xl:w-1/2 2xl:w-2/5"
       >
         <div className="w-full flex flex-col gap-y-3 rounded-lg items-center text-white bg-slate-800 justify-center px-10 py-8 shadow-2xl/70 shadow-black">
@@ -121,34 +132,38 @@ const AddTodo = ({ isEdit }) => {
           <BasicInput
             label="Title"
             placeholder="What do you need to do..!"
-            value={formData.title}
-            onChangeInput={(e) => handleOnChange("title", e.target.value)}
+            register={register}
+            name="title"
             type="text"
+            errors={errors}
           />
           {/*  */}
           <Basictextarea
             placeholder="Enter Your Description"
-            value={formData.description}
-            onChangeInput={(e) => handleOnChange("description", e.target.value)}
+            register={register}
+            name="description"
+            errors={errors}
           />
           <div className="flex flex-col sm:flex-row items-center w-full justify-between">
             {/* Start Date Input */}
             <BasicDate
-              value={formData.startDate}
-              onChangeInput={(e) => handleOnChange("startDate", e.target.value)}
+              name="startDate"
+              register={register}
               id="startDate"
               min=""
               label="Start Date"
+              errors={errors}
             />
             <p className="mt-5">
               <FaArrowRightLong />
             </p>
             {/* End Date Input */}
             <BasicDate
-              value={formData.endDate}
-              onChangeInput={(e) => handleOnChange("endDate", e.target.value)}
+              name="endDate"
+              register={register}
+              errors={errors}
               id="endDate"
-              min={formData.startDate}
+              min={watchValue.startDate}
               label="End Date"
             />
           </div>
@@ -157,11 +172,10 @@ const AddTodo = ({ isEdit }) => {
               {/* time Taken dropDown */}
               <BasicInput
                 label="Time Taken"
+                errors={errors}
                 placeholder="Total Time Taken"
-                value={formData.timeTaken}
-                onChangeInput={(e) =>
-                  handleOnChange("timeTaken", e.target.value)
-                }
+                name="timeTaken"
+                register={register}
                 type="number"
                 emptyValueText="Taken Time Required"
               />
@@ -171,9 +185,9 @@ const AddTodo = ({ isEdit }) => {
               userStatus={userStatus}
               isOptionDisabled={isOptionDisabled}
               label="Current Status"
-              status={formData.status}
-              onChangeInput={(e) => handleOnChange("status", e.target.value)}
               dropDownDiabled={!isEdit}
+              register={register}
+              name="status"
             />
           </div>
           {/* user dropDown */}
@@ -181,9 +195,9 @@ const AddTodo = ({ isEdit }) => {
             <BasicDropDown
               userStatus={user}
               label="Select User"
-              status={formData.userID}
-              onChangeInput={(e) => handleOnChange("userID", e.target.value)}
               dropDownDiabled={isUserDisabled}
+              register={register}
+              name="userID"
             />
           )}
           <div className="flex items-center">
@@ -191,6 +205,7 @@ const AddTodo = ({ isEdit }) => {
             <button
               type="submit"
               disabled={disabledbtn}
+              // disabled={!isValid}
               className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
             >
               {isEdit ? "UPDATE" : "SUBMIT"}
