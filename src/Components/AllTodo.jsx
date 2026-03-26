@@ -16,10 +16,8 @@ const AllTodo = () => {
   };
 
   const editClick = (id) => {
-    console.log(id);
     const editItem = todo.find((i) => i.id == id);
     dispatch(setEditData(editItem));
-    // setEditData(editItem);
     navigate(`/edit-todo/${id}`);
   };
   return (
@@ -38,9 +36,13 @@ const AllTodo = () => {
             className="flex bg-white items-center justify-between mx-3 p-3 shadow-2xl/30 rounded"
           >
             <div className="bg-secondary">
-              <p className="ps-2 w-70 text-lg font-semibold">{items.title}</p>
+              <p className="ps-2 w-70 text-lg font-semibold wrap-break-word">
+                {items.title}
+              </p>
               <p className="text-xs text-gray-400 font-bold">Description</p>
-              <p className="ps-2 text-sm w-70">{items.description}</p>
+              <p className="ps-2 text-sm w-70 wrap-break-word">
+                {items.description}
+              </p>
             </div>
             <div className="flex items-center justify-center flex-col *:text-sm">
               <p>{items.startDate}</p>
@@ -55,7 +57,7 @@ const AllTodo = () => {
             <div className="flex flex-col items-center justify-center">
               <p>{items.status}</p>
               <p className="text-xs">To</p>
-              <p>{items.userID === "" ? "Not Assigned" : items.userID}</p>
+              <p>{items.userID}</p>
             </div>
 
             <div className="flex items-center gap-x-2 *:text-white *:cursor-pointer">
@@ -65,14 +67,13 @@ const AllTodo = () => {
                   deleteTodo(items.id);
                 }}
                 className="bg-red-600 px-5 py-2 rounded-lg text-xs"
-                >
+              >
                 DELETE
               </button>
               <button
                 type="button"
                 className="bg-blue-600 px-5 py-2 rounded-lg text-xs"
                 onClick={(e) => {
-                  console.log(items.id);
                   editClick(items.id);
                 }}
               >

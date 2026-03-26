@@ -63,22 +63,22 @@ const AddTodo = ({ isEdit }) => {
     formData.status !== "Assigned" &&
     formData.status !== "Reviews" &&
     formData.status !== "In Progress";
-    
-    const formreset = () => {
-      setFormData({
-        title: "",
-        description: "",
-        startDate: "",
-        endDate: "",
-        timeTaken: "",
-        status: "",
-        userID: "",
-      });
-    };
-    
-    const handleOnChange = (key, value) => {
-      setFormData((prev) => ({ ...prev, [key]: value }));
-    };
+
+  const formreset = () => {
+    setFormData({
+      title: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      timeTaken: "",
+      status: "",
+      userID: "",
+    });
+  };
+
+  const handleOnChange = (key, value) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
   // add and update todo handler
 
   const handleFormSubmit = (e) => {
@@ -87,6 +87,7 @@ const AddTodo = ({ isEdit }) => {
       ...formData,
       id: editData?.id || Date.now(),
       status: formData.status || "BackLog",
+      userID: formData.userID || "Not Assigned",
     };
     if (isEdit && editData) {
       const update = todo.map((item) =>
@@ -132,16 +133,14 @@ const AddTodo = ({ isEdit }) => {
             type="text"
             emptyValueText="Title required"
           />
-          {/* 1st row -------------------------------------------end---------------------------- */}
-          {/* 2nd row --------------------------------------start---------------------------------- */}
+          {/*  */}
           <Basictextarea
             placeholder="Enter Your Description"
             value={formData.description}
             onChangeInput={(e) => handleOnChange("description", e.target.value)}
           />
-          {/* 2nd row----------------------------------------end----------------------------------------------- */}
-          {/* 3rd row ----------------------------------------start------------------------------------------ */}
           <div className="flex flex-col sm:flex-row items-center w-full justify-between">
+            {/* Start Date Input */}
             <BasicDate
               value={formData.startDate}
               onChangeInput={(e) => handleOnChange("startDate", e.target.value)}
@@ -152,6 +151,7 @@ const AddTodo = ({ isEdit }) => {
             <p className="mt-5">
               <FaArrowRightLong />
             </p>
+            {/* End Date Input */}
             <BasicDate
               value={formData.endDate}
               onChangeInput={(e) => handleOnChange("endDate", e.target.value)}
@@ -160,9 +160,6 @@ const AddTodo = ({ isEdit }) => {
               label="End Date"
             />
           </div>
-          {/* 3rd row-------------------------------end--------------------------------------------- */}
-          {/* 4th row  ---------------------------------start-------------------------------------------- */}
-
           <div className="flex flex-col sm:flex-row justify-between items-center w-full *:w-1/2 gap-x-10">
             <div>
               {/* time Taken dropDown */}
