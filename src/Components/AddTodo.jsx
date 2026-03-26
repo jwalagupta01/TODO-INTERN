@@ -17,7 +17,7 @@ const AddTodo = ({ isEdit }) => {
   const editData = useSelector((state) => state.todo.editTodoId);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
+  const formStr = {
     title: "",
     description: "",
     startDate: "",
@@ -25,7 +25,9 @@ const AddTodo = ({ isEdit }) => {
     timeTaken: "",
     status: "",
     userID: "",
-  });
+  };
+
+  const [formData, setFormData] = useState(formStr);
 
   const userStatus = [
     "BackLog",
@@ -64,18 +66,6 @@ const AddTodo = ({ isEdit }) => {
     formData.status !== "Reviews" &&
     formData.status !== "In Progress";
 
-  const formreset = () => {
-    setFormData({
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      timeTaken: "",
-      status: "",
-      userID: "",
-    });
-  };
-
   const handleOnChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
@@ -98,7 +88,7 @@ const AddTodo = ({ isEdit }) => {
       dispatch(addTodo(payload));
     }
     dispatch(setEditData(null));
-    formreset();
+    setFormData(formStr);
     navigate("/alltodo");
   };
 
@@ -109,7 +99,7 @@ const AddTodo = ({ isEdit }) => {
         userID: editData.userID === "Not Assigned" ? "" : editData.userID,
       });
     } else {
-      formreset();
+      setFormData(formStr);
     }
   }, [editData && isEdit]);
 
@@ -131,7 +121,6 @@ const AddTodo = ({ isEdit }) => {
             value={formData.title}
             onChangeInput={(e) => handleOnChange("title", e.target.value)}
             type="text"
-            emptyValueText="Title required"
           />
           {/*  */}
           <Basictextarea

@@ -4,7 +4,6 @@ export const BasicInput = ({
   placeholder,
   onChangeInput,
   type,
-  emptyValueText,
 }) => {
   return (
     <>
