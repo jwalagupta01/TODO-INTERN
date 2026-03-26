@@ -38,12 +38,14 @@ const AddTodo = ({ isEdit }) => {
   ].map((name) => ({ name }));
 
   // if all input are blanks so disabled the button
-  const disabledbtn =
-    !formData.title.trim() &&
-    !formData.description.trim() &&
-    !formData.startDate.trim() &&
-    !formData.endDate.trim() &&
-    !formData.timeTaken.trim();
+
+  const disabledbtn = [
+    formData.title,
+    formData.description,
+    formData.startDate,
+    formData.endDate,
+    formData.timeTaken,
+  ].some((item) => !item.trim());
 
   const disabledObject = {
     BackLog: ["Assigned", "Done", "In Progress", "Reviews"],
@@ -55,16 +57,13 @@ const AddTodo = ({ isEdit }) => {
     return disabledObject[items.name]?.includes(status) || false;
   };
 
-  const isUserVisible =
-    formData.status == "Assigned" ||
-    formData.status == "In Progress" ||
-    formData.status == "Reviews" ||
-    formData.status == "Done";
+  const isUserVisible = ["Assigned", "In Progress", "Reviews", "Done"].includes(
+    formData.status,
+  );
 
-  const isUserDisabled =
-    formData.status !== "Assigned" &&
-    formData.status !== "Reviews" &&
-    formData.status !== "In Progress";
+  const isUserDisabled = !["Assigned", "Reviews", "In Progress"].includes(
+    formData.status,
+  );
 
   const handleOnChange = (key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
@@ -79,17 +78,21 @@ const AddTodo = ({ isEdit }) => {
       status: formData.status || "BackLog",
       userID: formData.userID || "Not Assigned",
     };
-    if (isEdit && editData) {
-      const update = todo.map((item) =>
-        item.id === editData.id ? payload : item,
-      );
-      dispatch(editTodo(update));
-    } else {
-      dispatch(addTodo(payload));
+    try {
+      isEdit && editData
+        ? dispatch(
+            editTodo(
+              todo.map((item) => (item.id === editData.id ? payload : item)),
+            ),
+          )
+        : dispatch(addTodo(payload));
+
+      dispatch(setEditData(null));
+      setFormData(formStr);
+      navigate("/alltodo");
+    } catch (error) {
+      console.log(error);
     }
-    dispatch(setEditData(null));
-    setFormData(formStr);
-    navigate("/alltodo");
   };
 
   useEffect(() => {
