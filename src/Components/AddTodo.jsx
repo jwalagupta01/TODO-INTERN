@@ -35,28 +35,6 @@ const AddTodo = ({ isEdit }) => {
     "Done",
   ].map((name) => ({ name }));
 
-  const checkInput = () => {
-    let isValid = true;
-
-    if (!formData.title) {
-      setEmptytitle(true);
-      isValid = false;
-    } else if (!formData.description) {
-      setEmptyDisc(true);
-      isValid = false;
-    } else if (!formData.startDate) {
-      setEmptyStartDate(true);
-      isValid = false;
-    } else if (!formData.endDate) {
-      setEmptyEndDate(true);
-      isValid = false;
-    } else if (!formData.timeTaken) {
-      setEmptyTimeTaken(true);
-      isValid = false;
-    }
-    return isValid;
-  };
-
   // if all input are blanks so disabled the button
   const disabledbtn =
     !formData.title.trim() &&
@@ -85,41 +63,38 @@ const AddTodo = ({ isEdit }) => {
     formData.status !== "Assigned" &&
     formData.status !== "Reviews" &&
     formData.status !== "In Progress";
-
-  const handleOnChange = (key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const formreset = () => {
-    setFormData({
-      title: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      timeTaken: "",
-      status: "",
-      userID: "",
-    });
-  };
+    
+    const formreset = () => {
+      setFormData({
+        title: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        timeTaken: "",
+        status: "",
+        userID: "",
+      });
+    };
+    
+    const handleOnChange = (key, value) => {
+      setFormData((prev) => ({ ...prev, [key]: value }));
+    };
+  // add and update todo handler
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    const isValid = checkInput();
-    if (!isValid) return;
-
     const payload = {
       ...formData,
       id: editData?.id || Date.now(),
-      timeTaken: formData.timeTaken == "" || formData.timeTaken >= 1 ? "1" : "",
       status: formData.status || "BackLog",
     };
-    if (isEdit) {
+    if (isEdit && editData) {
       const update = todo.map((item) =>
         item.id === editData.id ? payload : item,
       );
       dispatch(editTodo(update));
     } else {
-      dispatch(addTodo(formData));
+      dispatch(addTodo(payload));
     }
     dispatch(setEditData(null));
     formreset();

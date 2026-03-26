@@ -16,6 +16,7 @@ const AllTodo = () => {
   };
 
   const editClick = (id) => {
+    console.log(id);
     const editItem = todo.find((i) => i.id == id);
     dispatch(setEditData(editItem));
     // setEditData(editItem);
@@ -64,13 +65,14 @@ const AllTodo = () => {
                   deleteTodo(items.id);
                 }}
                 className="bg-red-600 px-5 py-2 rounded-lg text-xs"
-              >
+                >
                 DELETE
               </button>
               <button
                 type="button"
                 className="bg-blue-600 px-5 py-2 rounded-lg text-xs"
-                onClick={() => {
+                onClick={(e) => {
+                  console.log(items.id);
                   editClick(items.id);
                 }}
               >
