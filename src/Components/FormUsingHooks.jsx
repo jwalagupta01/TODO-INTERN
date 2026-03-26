@@ -21,15 +21,16 @@ const AddTodo = ({ isEdit }) => {
   const navigate = useNavigate();
 
   const formSchema = z.object({
-    title: z.string
+    title: z
+      .string()
       .min(10, "Minimum Length Should Be 10")
       .max(50, "Maximum Length Should Be 50"),
-    description: z.string.max(200, "Miximum Length Should Be 200"),
-    startDate: z.coerce.date,
-    endDate: z.coerce.date,
-    timeTaken: z.number,
-    status: z.string,
-    userId: z.string,
+    description: z.string().max(200, "Miximum Length Should Be 200"),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    timeTaken: z.coerce.number(),
+    status: z.string(),
+    userID: z.string(),
   });
 
   const {
@@ -44,6 +45,7 @@ const AddTodo = ({ isEdit }) => {
   });
 
   const watchValue = watch();
+  //   console.log(watch.status);
 
   const userStatus = [
     "BackLog",
@@ -90,6 +92,7 @@ const AddTodo = ({ isEdit }) => {
       status: data.status || "BackLog",
       userID: data.userID || "Not Assigned",
     };
+    console.log(payLoad);
     try {
       isEdit && editData
         ? dispatch(
@@ -101,6 +104,7 @@ const AddTodo = ({ isEdit }) => {
 
       navigate("/allTodo");
       dispatch(setEditData(null));
+      reset();
     } catch (error) {
       console.log(error);
     }
@@ -186,8 +190,9 @@ const AddTodo = ({ isEdit }) => {
               isOptionDisabled={isOptionDisabled}
               label="Current Status"
               dropDownDiabled={!isEdit}
-              register={register}
               name="status"
+              register={register}
+              status={watchValue.status}
             />
           </div>
           {/* user dropDown */}
@@ -196,8 +201,8 @@ const AddTodo = ({ isEdit }) => {
               userStatus={user}
               label="Select User"
               dropDownDiabled={isUserDisabled}
-              register={register}
               name="userID"
+              register={register}
             />
           )}
           <div className="flex items-center">

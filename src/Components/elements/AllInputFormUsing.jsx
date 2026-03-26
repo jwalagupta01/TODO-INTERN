@@ -73,22 +73,18 @@ export const BasicDropDown = ({
   register,
   isOptionDisabled,
   userStatus,
+  status,
   dropDownDiabled,
-  errors,
 }) => {
   return (
     <>
       <div className="flex flex-col *:px-2 group w-full">
-        <label
-          htmlFor="UserSelect"
-          className="font-bold text-gray-400 group-focus-within:text-amber-200"
-        >
+        <label className="font-bold text-gray-400 group-focus-within:text-amber-200">
           {label}
         </label>
         <select
           {...register(name)}
           name=""
-          id="UserSelect"
           className={`border outline-0 w-full h-10 rounded border-gray-600 px-5 *:text-slate-950 focus:border-amber-200 focus:text-amber-200 ${dropDownDiabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
           disabled={dropDownDiabled}
         >
