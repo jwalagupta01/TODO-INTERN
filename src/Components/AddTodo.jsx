@@ -45,7 +45,7 @@ const AddTodo = ({ isEdit }) => {
     formData.startDate,
     formData.endDate,
     formData.timeTaken,
-  ].some((item) => !item.trim());
+  ].every((item) => !item.trim());
 
   const disabledObject = {
     BackLog: ["Assigned", "Done", "In Progress", "Reviews"],
@@ -95,16 +95,16 @@ const AddTodo = ({ isEdit }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (editData && isEdit) {
-  //     setFormData({
-  //       ...editData,
-  //       userID: editData.userID === "Not Assigned" ? "" : editData.userID,
-  //     });
-  //   } else {
-  //     setFormData(formStr);
-  //   }
-  // }, [editData && isEdit]);
+  useEffect(() => {
+    if (editData && isEdit) {
+      setFormData({
+        ...editData,
+        userID: editData.userID === "Not Assigned" ? "" : editData.userID,
+      });
+    } else {
+      setFormData(formStr);
+    }
+  }, [editData && isEdit]);
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">

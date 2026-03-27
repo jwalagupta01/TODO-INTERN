@@ -24,13 +24,17 @@ const AddTodo = ({ isEdit }) => {
     title: z
       .string()
       .min(10, "Minimum Length Should Be 10")
-      .max(50, "Maximum Length Should Be 50"),
-    description: z.string().max(200, "Miximum Length Should Be 200"),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date(),
-    timeTaken: z.coerce.number(),
-    status: z.string(),
-    userID: z.string(),
+      .max(50, "Maximum Length Should Be 50")
+      .nonempty("Title Is Required"),
+    description: z
+      .string()
+      .max(200, "Miximum Length Should Be 200")
+      .nonempty("Description is Required"),
+    startDate: z.string().nonempty("Start Date Is Required"),
+    endDate: z.string().nonempty("EndDate is Required"),
+    timeTaken: z.coerce.number().min(1, "Time Taken is required"),
+    status: z.string().optional().default("Not Assigned"),
+    userID: z.string().optional().default("Not Assigned"),
   });
 
   const {
@@ -38,14 +42,17 @@ const AddTodo = ({ isEdit }) => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
+    defaultValues: {
+      status: "BackLog",
+      userID: "",
+    },
     mode: "onChange",
     resolver: zodResolver(formSchema),
   });
 
   const watchValue = watch();
-  //   console.log(watch.status);
 
   const userStatus = [
     "BackLog",
@@ -63,7 +70,7 @@ const AddTodo = ({ isEdit }) => {
     watchValue.startDate,
     watchValue.endDate,
     watchValue.timeTaken,
-  ].every((item) => !item?.trim());
+  ].every((item) => !item);
 
   const disabledObject = {
     BackLog: ["Assigned", "Done", "In Progress", "Reviews"],
@@ -86,13 +93,17 @@ const AddTodo = ({ isEdit }) => {
   // add and update todo handler
 
   const handleFormSubmit = (data) => {
+    const formatDate = (date) => {
+      return new Date(date).toISOString().split("T")[0];
+    };
     const payLoad = {
       ...data,
       id: editData?.id || Date.now(),
+      startDate: formatDate(data.startDate),
+      endDate: formatDate(data.endDate),
       status: data.status || "BackLog",
       userID: data.userID || "Not Assigned",
     };
-    console.log(payLoad);
     try {
       isEdit && editData
         ? dispatch(
@@ -210,7 +221,6 @@ const AddTodo = ({ isEdit }) => {
             <button
               type="submit"
               disabled={disabledbtn}
-              // disabled={!isValid}
               className="border-amber-200 border-2 px-9 py-2 rounded-full text-amber-200 cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-amber-200 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 disabled:scale-100"
             >
               {isEdit ? "UPDATE" : "SUBMIT"}
