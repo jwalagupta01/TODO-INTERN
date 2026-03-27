@@ -104,7 +104,7 @@ const AddTodo = ({ isEdit }) => {
     } else {
       setFormData(formStr);
     }
-  }, [editData && isEdit]);
+  }, [editData, isEdit]);
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">

@@ -31,7 +31,7 @@ const AddTodo = ({ isEdit }) => {
       .max(200, "Miximum Length Should Be 200")
       .nonempty("Description is Required"),
     startDate: z.string().nonempty("Start Date Is Required"),
-    endDate: z.string().nonempty("EndDate is Required"),
+    endDate: z.string().nonempty("End Date is Required"),
     timeTaken: z.coerce.number().min(1, "Time Taken is required"),
     status: z.string().optional(),
     userID: z.string().optional(),
@@ -44,7 +44,7 @@ const AddTodo = ({ isEdit }) => {
     reset,
     formState: { errors },
   } = useForm({
-    mode: "onChange",
+    mode: "",
     resolver: zodResolver(formSchema),
   });
 
@@ -108,7 +108,7 @@ const AddTodo = ({ isEdit }) => {
       dispatch(setEditData(null));
       reset();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -121,7 +121,7 @@ const AddTodo = ({ isEdit }) => {
     } else {
       reset();
     }
-  }, [editData && isEdit]);
+  }, [editData, isEdit]);
 
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
