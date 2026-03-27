@@ -33,8 +33,8 @@ const AddTodo = ({ isEdit }) => {
     startDate: z.string().nonempty("Start Date Is Required"),
     endDate: z.string().nonempty("EndDate is Required"),
     timeTaken: z.coerce.number().min(1, "Time Taken is required"),
-    status: z.string().optional().default("Not Assigned"),
-    userID: z.string().optional().default("Not Assigned"),
+    status: z.string().optional(),
+    userID: z.string().optional(),
   });
 
   const {
@@ -44,10 +44,6 @@ const AddTodo = ({ isEdit }) => {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      status: "BackLog",
-      userID: "",
-    },
     mode: "onChange",
     resolver: zodResolver(formSchema),
   });
@@ -93,14 +89,9 @@ const AddTodo = ({ isEdit }) => {
   // add and update todo handler
 
   const handleFormSubmit = (data) => {
-    const formatDate = (date) => {
-      return new Date(date).toISOString().split("T")[0];
-    };
     const payLoad = {
       ...data,
       id: editData?.id || Date.now(),
-      startDate: formatDate(data.startDate),
-      endDate: formatDate(data.endDate),
       status: data.status || "BackLog",
       userID: data.userID || "Not Assigned",
     };
