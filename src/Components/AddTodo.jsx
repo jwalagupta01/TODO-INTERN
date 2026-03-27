@@ -109,7 +109,6 @@ const AddTodo = ({ isEdit }) => {
   return (
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
       <form
-        action=""
         onSubmit={handleFormSubmit}
         className="w-full sm:w-full md:w-full lg:w-4/5 xl:w-1/2 2xl:w-2/5"
       >

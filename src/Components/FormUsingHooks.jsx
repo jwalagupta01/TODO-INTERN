@@ -33,22 +33,15 @@ const AddTodo = ({ isEdit }) => {
     startDate: z.string().nonempty("Start Date Is Required"),
     endDate: z.string().nonempty("End Date is Required"),
     timeTaken: z.coerce.number().min(1, "Time Taken is required"),
-    status: z.string().optional(),
-    userID: z.string().optional(),
+    status: z.string().optional().default("BackLog"),
+    userID: z.string().optional().default("Not Assigned"),
   });
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm({
-    mode: "",
+  const todoForm = useForm({
     resolver: zodResolver(formSchema),
   });
 
-  const watchValue = watch();
+  const watchValue = todoForm.watch();
 
   const userStatus = [
     "BackLog",
@@ -92,9 +85,10 @@ const AddTodo = ({ isEdit }) => {
     const payLoad = {
       ...data,
       id: editData?.id || Date.now(),
-      status: data.status || "BackLog",
-      userID: data.userID || "Not Assigned",
     };
+
+    console.log(payLoad);
+
     try {
       isEdit && editData
         ? dispatch(
@@ -106,7 +100,7 @@ const AddTodo = ({ isEdit }) => {
 
       navigate("/allTodo");
       dispatch(setEditData(null));
-      reset();
+      todoForm.reset();
     } catch (error) {
       console.error(error);
     }
@@ -114,12 +108,12 @@ const AddTodo = ({ isEdit }) => {
 
   useEffect(() => {
     if (editData && isEdit) {
-      reset({
+      todoForm.reset({
         ...editData,
         userID: editData.userID === "Not Assigned" ? "" : editData.userID,
       });
     } else {
-      reset();
+      todoForm.reset();
     }
   }, [editData, isEdit]);
 
@@ -127,7 +121,7 @@ const AddTodo = ({ isEdit }) => {
     <div className="ms-60 px-5 flex items-center justify-center w-full bg-teal-50">
       <form
         action=""
-        onSubmit={handleSubmit(handleFormSubmit)}
+        onSubmit={todoForm.handleSubmit(handleFormSubmit)}
         className="w-full sm:w-full md:w-full lg:w-4/5 xl:w-1/2 2xl:w-2/5"
       >
         <div className="w-full flex flex-col gap-y-3 rounded-lg items-center text-white bg-slate-800 justify-center px-10 py-8 shadow-2xl/70 shadow-black">
@@ -138,27 +132,27 @@ const AddTodo = ({ isEdit }) => {
           <BasicInput
             label="Title"
             placeholder="What do you need to do..!"
-            register={register}
+            register={todoForm.register}
             name="title"
             type="text"
-            errors={errors}
+            errors={todoForm.formState.errors}
           />
           {/*  */}
           <Basictextarea
             placeholder="Enter Your Description"
-            register={register}
+            register={todoForm.register}
             name="description"
-            errors={errors}
+            errors={todoForm.formState.errors}
           />
           <div className="flex flex-col sm:flex-row items-center w-full justify-between">
             {/* Start Date Input */}
             <BasicDate
               name="startDate"
-              register={register}
+              register={todoForm.register}
               id="startDate"
               min=""
               label="Start Date"
-              errors={errors}
+              errors={todoForm.formState.errors}
             />
             <p className="mt-5">
               <FaArrowRightLong />
@@ -166,8 +160,8 @@ const AddTodo = ({ isEdit }) => {
             {/* End Date Input */}
             <BasicDate
               name="endDate"
-              register={register}
-              errors={errors}
+              register={todoForm.register}
+              errors={todoForm.formState.errors}
               id="endDate"
               min={watchValue.startDate}
               label="End Date"
@@ -178,10 +172,10 @@ const AddTodo = ({ isEdit }) => {
               {/* time Taken dropDown */}
               <BasicInput
                 label="Time Taken"
-                errors={errors}
+                errors={todoForm.formState.errors}
                 placeholder="Total Time Taken"
                 name="timeTaken"
-                register={register}
+                register={todoForm.register}
                 type="number"
                 emptyValueText="Taken Time Required"
               />
@@ -193,7 +187,7 @@ const AddTodo = ({ isEdit }) => {
               label="Current Status"
               dropDownDiabled={!isEdit}
               name="status"
-              register={register}
+              register={todoForm.register}
               status={watchValue.status}
             />
           </div>
@@ -204,7 +198,7 @@ const AddTodo = ({ isEdit }) => {
               label="Select User"
               dropDownDiabled={isUserDisabled}
               name="userID"
-              register={register}
+              register={todoForm.register}
             />
           )}
           <div className="flex items-center">
