@@ -1,13 +1,10 @@
 import React from "react";
 
-export const BasicInput = ({
-  placeholder,
-  label,
-  type,
-  errors,
-  register,
-  name,
-}) => {
+export const BasicInput = ({ placeholder, label, type, name, form }) => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
   return (
     <div className="w-full">
       <label htmlFor={label}>
@@ -31,12 +28,16 @@ export const BasicDropDown = ({
   label,
   list,
   fOption,
-  register,
-  errors,
   name,
   valueKey,
   labelKey,
+  form,
 }) => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
   return (
     <>
       <div className="w-full">

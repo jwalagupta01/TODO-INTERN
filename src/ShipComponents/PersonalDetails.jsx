@@ -110,33 +110,29 @@ const PersonalDetails = ({ list, consignor, setConsignor, setData }) => {
                 placeholder="Enter First Name ..."
                 label="First Name"
                 type="text"
-                errors={personalDataForm.formState.errors}
-                register={personalDataForm.register}
                 name="fname"
+                form={personalDataForm}
               />
               <BasicInput
                 placeholder="Enter Last Name ..."
                 label="Last Name"
                 type="text"
-                errors={personalDataForm.formState.errors}
-                register={personalDataForm.register}
                 name="lname"
+                form={personalDataForm}
               />
               <BasicInput
                 placeholder="Enter Mobile Number ..."
                 label="Mobile Number"
                 type="tel"
-                errors={personalDataForm.formState.errors}
-                register={personalDataForm.register}
                 name="mobile"
+                form={personalDataForm}
               />
               <BasicInput
                 placeholder="Enter Email ..."
                 label="Email Address"
                 type="email"
-                errors={personalDataForm.formState.errors}
-                register={personalDataForm.register}
                 name="email"
+                form={personalDataForm}
               />
             </div>
             <div>
@@ -146,8 +142,7 @@ const PersonalDetails = ({ list, consignor, setConsignor, setData }) => {
                   label="Country"
                   list={country}
                   fOption="Select Country"
-                  register={personalDataForm.register}
-                  errors={personalDataForm.formState.errors}
+                  form={personalDataForm}
                   name="country"
                   labelKey="country_name"
                   valueKey="country_iso2"
@@ -156,51 +151,45 @@ const PersonalDetails = ({ list, consignor, setConsignor, setData }) => {
                   placeholder="Enter Address 1 ..."
                   label="Address 1"
                   type="text"
-                  errors={personalDataForm.formState.errors}
-                  register={personalDataForm.register}
                   name="address1"
+                  form={personalDataForm}
                 />
                 <BasicInput
                   placeholder="Enter Address 2 ..."
                   label="Address 2"
                   type="text"
-                  errors={personalDataForm.formState.errors}
-                  register={personalDataForm.register}
                   name="address2"
+                  form={personalDataForm}
                 />
                 <BasicInput
                   label="Landmark"
                   placeholder="Enter Landmark ..."
                   type="text"
-                  errors={personalDataForm.formState.errors}
-                  register={personalDataForm.register}
                   name="landMark"
+                  form={personalDataForm}
                 />
                 <BasicDropDown
                   label="State"
                   list={state}
                   fOption="Select State"
-                  register={personalDataForm.register}
-                  errors={personalDataForm.formState.errors}
                   name="state"
                   valueKey="state_name"
                   labelKey="state_name"
+                  form={personalDataForm}
                 />
                 <BasicInput
                   placeholder="Enter City ..."
                   label="City"
                   type="text"
-                  errors={personalDataForm.formState.errors}
-                  register={personalDataForm.register}
                   name="city"
+                  form={personalDataForm}
                 />
                 <BasicInput
                   placeholder="Enter Pincode ..."
                   label="Pincode"
                   type="text"
-                  errors={personalDataForm.formState.errors}
-                  register={personalDataForm.register}
                   name="pinCode"
+                  form={personalDataForm}
                 />
               </div>
             </div>
@@ -223,57 +212,50 @@ const PersonalDetails = ({ list, consignor, setConsignor, setData }) => {
                     label="Country"
                     list={country}
                     fOption="Select Country"
-                    register={personalDataForm.register}
-                    errors={personalDataForm.formState.errors}
                     name="state"
+                    form={personalDataForm}
                   />
                   <BasicInput
                     placeholder="Enter Address 1 ..."
                     label="Address 1"
                     type="text"
-                    errors={personalDataForm.formState.errors}
-                    register={personalDataForm.register}
                     name="billing_Country"
+                    form={personalDataForm}
                   />
                   <BasicInput
                     placeholder="Enter Address 2 ..."
                     label="Address 2"
                     type="text"
-                    errors={personalDataForm.formState.errors}
-                    register={personalDataForm.register}
                     name="billing_Address2"
+                    form={personalDataForm}
                   />
                   <BasicInput
                     label="Landmark"
                     placeholder="Enter Landmark ..."
                     type="text"
-                    errors={personalDataForm.formState.errors}
-                    register={personalDataForm.register}
                     name="billing_Landmark"
+                    form={personalDataForm}
                   />
                   <BasicDropDown
                     label="State"
                     list={list}
                     fOption="Select Country"
-                    register={personalDataForm.register}
-                    errors={personalDataForm.formState.errors}
                     name="billing_State"
+                    form={personalDataForm}
                   />
                   <BasicInput
                     placeholder="Enter City ..."
                     label="City"
                     type="text"
-                    errors={personalDataForm.formState.errors}
-                    register={personalDataForm.register}
                     name="billing_City"
+                    form={personalDataForm}
                   />
                   <BasicInput
                     placeholder="Enter Pincode ..."
                     label="Pincode"
                     type="text"
-                    errors={personalDataForm.formState.errors}
-                    register={personalDataForm.register}
                     name="billing_Pincode"
+                    form={personalDataForm}
                   />
                 </div>
               </div>

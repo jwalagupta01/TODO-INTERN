@@ -10,7 +10,7 @@ const SearchCustomer = ({ consignee, setConsignee, setConsignor, setData }) => {
   const user = ["user1", "user2", "user3", "user4", "user5", "user6"].map(
     (userId) => ({ userId }),
   );
-  
+
   const consigneeFormSchema = z.object({
     userID: z.string().nonempty("Please Select Customer"),
   });
@@ -73,11 +73,10 @@ const SearchCustomer = ({ consignee, setConsignee, setConsignor, setData }) => {
                 label="Search Customer"
                 fOption="Select Customer"
                 list={user}
-                register={consigneeForm.register}
                 name="userID"
-                errors={consigneeForm.formState.errors}
                 valueKey="userId"
                 labelKey="userId"
+                form={consigneeForm}
               />
               {!watchValue.userID == "" ? (
                 <div className="flex justify-between px-10 py-5 *:text-sm">
