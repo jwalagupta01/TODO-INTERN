@@ -5,6 +5,7 @@ import AllTodo from "./Components/AllTodo";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import UserData from "./Components/UserData";
 import FormUsingHooks from "./Components/FormUsingHooks";
+import CreateCSBOrder from "./Pages/CreateCSBOrder";
 
 const App = () => {
   return (
@@ -13,7 +14,8 @@ const App = () => {
       <div className="flex h-full mt-15 flex-row justify-between">
         <Sidebar />
         <Routes>
-          <Route path="/" element={<AddTodo />} />
+          <Route path="/" element={<CreateCSBOrder />} />
+          <Route path="/addTodo" element={<AddTodo />} />
           <Route
             path="/edit-todo/:todoId"
             element={<FormUsingHooks isEdit="true" />}
