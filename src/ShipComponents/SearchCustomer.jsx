@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BasicDropDown } from "./Elements/AllInput";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const SearchCustomer = ({ consignee, setConsignee, setConsignor, setData }) => {
+  const [changeBtn, setChangeBtn] = useState(false);
+
+  const user = ["user1", "user2", "user3", "user4", "user5", "user6"].map(
+    (userId) => ({ userId }),
+  );
+  
   const consigneeFormSchema = z.object({
     userID: z.string().nonempty("Please Select Customer"),
   });
@@ -17,15 +23,19 @@ const SearchCustomer = ({ consignee, setConsignee, setConsignor, setData }) => {
     },
   });
 
-  const user = ["user1", "user2", "user3", "user4", "user5", "user6"].map(
-    (userId) => ({ userId }),
-  );
-
   const watchValue = consigneeForm.watch();
+
+  const changeUser = () => {
+    setConsignor(false);
+    setConsignee(true);
+    consigneeForm.reset();
+    setChangeBtn(false);
+  };
 
   const onhandleSubmit = (data) => {
     try {
       setData((prev) => ({ ...prev, consignorDetails: data }));
+      setChangeBtn(true);
       setConsignor(true);
       setConsignee(false);
     } catch (error) {
@@ -35,13 +45,25 @@ const SearchCustomer = ({ consignee, setConsignee, setConsignor, setData }) => {
 
   return (
     <div className="w-full my-4 border border-gray-300 rounded">
-      <div className="flex items-center gap-5 h-10 border-b border-gray-300 px-8">
-        <p
-          className={`px-2 rounded text-white ${consignee ? "bg-black" : "bg-gray-700"}`}
-        >
-          1
-        </p>
-        <p className="font-semibold">Consignor Details</p>
+      <div className="flex items-center justify-between h-13 border-b border-gray-300 px-8">
+        <div className="flex items-center gap-5">
+          <p
+            className={`px-2 rounded text-white ${consignee ? "bg-black" : "bg-gray-700"}`}
+          >
+            1
+          </p>
+          <p className="font-semibold">Consignor Details</p>
+        </div>
+        {changeBtn && (
+          <p
+            className="text-blue-500 cursor-pointer hover:underline"
+            onClick={() => {
+              changeUser();
+            }}
+          >
+            Change
+          </p>
+        )}
       </div>
       {consignee && (
         <form onSubmit={consigneeForm.handleSubmit(onhandleSubmit)}>
